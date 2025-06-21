@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omar Abdullah - Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display (serif for headings), Inter (sans-serif for body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Three.js CDN for 3D background animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        /* Base styles with custom fonts and colors for dark theme */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 for a deep dark background */
+            color: #e2e8f0; /* Slate 200 for primary text, light contrast */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif; /* Elegant serif for headings */
+            color: #f8fafc; /* Lighter color for headings */
+        }
+        /* Custom accent color for consistent branding */
+        .text-accent {
+            color: #60a5fa; /* Blue 400 for a vibrant accent on dark background */
+        }
+        /* Primary Button Styling */
+        .btn-primary {
+            @apply bg-blue-600 text-white px-8 py-3 rounded-lg shadow-md hover:bg-blue-500 transition duration-300 ease-in-out;
+            box-shadow: 0 4px 10px rgba(96, 165, 250, 0.4); /* Initial subtle glow */
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 15px rgba(96, 165, 250, 0.6); /* More pronounced glow on hover */
+        }
+        /* Secondary Button Styling (e.g., for navigation or alternative actions) */
+        .btn-secondary {
+            @apply bg-transparent border border-blue-400 text-blue-400 px-6 py-3 rounded-lg hover:bg-blue-900 hover:text-white transition duration-300 ease-in-out;
+        }
+
+        /* Hero Text Glow Effect */
+        .hero-text-glow {
+            text-shadow: 0 0 8px rgba(96, 165, 250, 0.7); /* Subtle blue glow */
+        }
+        .hero-sub-text-glow {
+            text-shadow: 0 0 5px rgba(226, 232, 240, 0.5); /* Subtle white glow for sub-text */
+        }
+
+        /* Skill Card Icon Hover Effect */
+        .skill-card:hover i {
+            transform: scale(1.1); /* Slightly enlarge icon */
+            color: #60a5fa; /* Change icon color to accent */
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.8); /* Add glow */
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Social Icon Hover Effect */
+        .social-icon:hover {
+            transform: scale(1.2); /* Enlarge icon */
+            color: #60a5fa; /* Change icon color to accent */
+            text-shadow: 0 0 12px rgba(96, 165, 250, 0.9); /* Add more prominent glow */
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Simple keyframe animation for elements appearing on load/scroll */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Apply animation to elements with specific classes */
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0; /* Start invisible */
+        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+
+        /* Custom scrollbar for better aesthetics in dark mode */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a202c; /* Darker track */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568; /* Gray 600 for softer thumb color */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #718096; /* Gray 500 on hover */
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- Header Section -->
+    <header class="bg-gray-900 shadow-lg py-4 sticky top-0 z-50">
+        <nav class="container mx-auto flex justify-between items-center px-4">
+            <!-- Brand/Logo (Omar Abdullah) -->
+            <a href="#hero" class="text-3xl font-bold text-accent">Omar Abdullah</a>
+            <!-- Navigation Links -->
+            <ul class="flex space-x-6">
+                <li><a href="#about" class="text-slate-200 hover:text-accent transition duration-300 font-medium">About</a></li>
+                <li><a href="#skills" class="text-slate-200 hover:text-accent transition duration-300 font-medium">Skills</a></li>
+                <li><a href="#projects" class="text-slate-200 hover:text-accent transition duration-300 font-medium">Projects</a></li>
+                <li><a href="#contact" class="text-slate-200 hover:text-accent transition duration-300 font-medium">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="relative h-screen flex items-center justify-center text-center bg-slate-900 overflow-hidden">
+            <!-- Asteroids Canvas will go here -->
+            <canvas id="fallingAsteroidsCanvas" class="absolute inset-0 z-0"></canvas>
+            <!-- Subtle background pattern or overlay for visual interest -->
+            <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800 opacity-50 z-10"></div> <!-- Reduced opacity for more asteroid visibility -->
+            <div class="relative z-20 p-6 max-w-3xl">
+                <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-4 text-white animate-fade-in-up">
+                    Hello, I'm <span class="text-accent hero-text-glow">Omar Abdullah</span>
+                </h1>
+                <p class="text-xl text-slate-200 mb-8 animate-fade-in-up delay-100 hero-sub-text-glow">
+                    A passionate <span class="font-semibold text-accent hero-text-glow">Android Developer</span> crafting intuitive and robust mobile experiences.
+                </p>
+                <a href="#projects" class="btn-primary animate-fade-in-up delay-200">View My Work</a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 bg-slate-800">
+            <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-12">
+                <div class="md:w-1/2 animate-fade-in-up">
+                    <img src="https://placehold.co/400x400/334155/f8fafc?text=Omar+Abdullah" alt="Omar Abdullah's Photo" class="rounded-full shadow-lg mx-auto md:mx-0 w-64 h-64 object-cover border-4 border-accent">
+                </div>
+                <div class="md:w-1/2 text-center md:text-left animate-fade-in-up delay-100">
+                    <h2 class="text-4xl font-bold mb-6 text-white">About <span class="text-accent">Me</span></h2>
+                    <p class="text-lg text-slate-200 mb-4 leading-relaxed">
+                        Hi there! My name is Omar Abdullah. I'm currently pursuing a B.E. in Information Technology and am in my 2nd year. I am a passionate **Android Developer** with a knack for building intuitive and visually appealing mobile applications.
+                    </p>
+                    <p class="text-lg text-slate-200 leading-relaxed">
+                        My journey in development includes hands-on experience with Kotlin Jetpack Compose, through which I built a functional expense tracker. I've also delved into AI development, creating an AI chatbot utilizing the Tavily API, Groq, and Streamlit. I enjoy honing my problem-solving skills by regularly solving problems on LeetCode and am continuously expanding my expertise by learning Java.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 bg-slate-900">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl font-bold mb-12 text-white animate-fade-in-up">My <span class="text-accent">Skills</span></h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    <!-- Updated Skill Cards with .skill-card class -->
+                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-100 skill-card">
+                        <i class="fab fa-android text-6xl text-green-500 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-slate-100">Android Development</h3>
+                    </div>
+                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-200 skill-card">
+                        <i class="fab fa-kotlin text-6xl text-purple-400 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-slate-100">Kotlin & Jetpack Compose</h3>
+                    </div>
+                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-300 skill-card">
+                        <i class="fab fa-java text-6xl text-red-500 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-slate-100">Java</h3>
+                    </div>
+                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-400 skill-card">
+                        <i class="fas fa-robot text-6xl text-purple-400 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-slate-100">AI/ML (Streamlit, Groq)</h3>
+                    </div>
+                     <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-500 skill-card">
+                        <i class="fas fa-code text-6xl text-cyan-400 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-slate-100">Problem Solving (LeetCode)</h3>
+                    </div>
+                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-400">
+                        <i class="fab fa-git-alt text-6xl text-red-600 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-slate-100">Git & GitHub</h3>
+                    </div>
+                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-300">
+                        <i class="fab fa-html5 text-6xl text-orange-400 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-slate-100">HTML5</h3>
+                    </div>
+                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-200">
+                        <i class="fab fa-css3-alt text-6xl text-blue-400 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-slate-100">CSS3 (Tailwind)</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 bg-slate-800">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl font-bold mb-12 text-white animate-fade-in-up">My <span class="text-accent">Projects</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Project Card: Expense Tracker -->
+                    <div class="bg-slate-700 rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-100">
+                        <img src="https://placehold.co/600x400/253b53/f8fafc?text=Expense+Tracker" alt="Expense Tracker Project" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-slate-100 mb-3">Expense Tracker App</h3>
+                            <p class="text-slate-200 mb-4">Developed a mobile expense tracker application using Kotlin Jetpack Compose, focusing on intuitive UI/UX and efficient data management for personal finance.</p>
+                            <a href="#" target="_blank" class="text-accent hover:underline font-medium">View Project <i class="fas fa-arrow-right text-sm ml-1"></i></a>
+                        </div>
+                    </div>
+                    <!-- Project Card: AI Chatbot -->
+                    <div class="bg-slate-700 rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-200">
+                        <img src="https://placehold.co/600x400/253b53/f8fafc?text=AI+Chatbot" alt="AI Chatbot Project" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-slate-100 mb-3">AI Chatbot</h3>
+                            <p class="text-slate-200 mb-4">Engineered an AI chatbot leveraging the Tavily API for intelligent search capabilities, Groq for fast inference, and Streamlit for a user-friendly interactive interface.</p>
+                            <a href="#" target="_blank" class="text-accent hover:underline font-medium">View Project <i class="fas fa-arrow-right text-sm ml-1"></i></a>
+                        </div>
+                    </div>
+                    <!-- Project Card Example 3 - Retaining one for general web dev -->
+                    <div class="bg-slate-700 rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-300">
+                        <img src="https://placehold.co/600x400/253b53/f8fafc?text=Web+Project" alt="General Web Project" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold text-slate-100 mb-3">Responsive Web Application</h3>
+                            <p class="text-slate-200 mb-4">Designed and developed a fully responsive web application, ensuring optimal viewing and interaction across various devices and screen sizes.</p>
+                            <a href="#" target="_blank" class="text-accent hover:underline font-medium">View Project <i class="fas fa-arrow-right text-sm ml-1"></i></a>
+                        </div>
+                    </div>
+                    <!-- Add more project cards as needed -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-slate-900">
+            <div class="container mx-auto px-4 text-center max-w-2xl">
+                <h2 class="text-4xl font-bold mb-12 text-white animate-fade-in-up">Get in <span class="text-accent">Touch</span></h2>
+                <p class="text-lg text-slate-200 mb-8 animate-fade-in-up delay-100">
+                    Have a question or interested in collaborating on a project? Feel free to reach out! I'm always open to new opportunities.
+                </p>
+                <form id="contact-form" class="bg-slate-700 p-8 rounded-lg shadow-xl space-y-6 animate-fade-in-up delay-200">
+                    <div>
+                        <label for="name" class="sr-only">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your Name" required
+                               class="w-full p-4 border border-slate-600 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200 bg-slate-800 text-white placeholder-slate-400">
+                    </div>
+                    <div>
+                        <label for="email" class="sr-only">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required
+                               class="w-full p-4 border border-slate-600 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200 bg-slate-800 text-white placeholder-slate-400">
+                    </div>
+                    <div>
+                        <label for="message" class="sr-only">Message</label>
+                        <textarea id="message" name="message" rows="6" placeholder="Your Message" required
+                                  class="w-full p-4 border border-slate-600 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200 bg-slate-800 text-white placeholder-slate-400"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary w-full">Send Message</button>
+                </form>
+                <div class="mt-10 flex justify-center space-x-6 text-slate-300 animate-fade-in-up delay-300">
+                    <a href="https://linkedin.com/in/yourprofile" target="_blank" class="text-3xl hover:text-accent transition duration-300 social-icon" aria-label="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/yourprofile" target="_blank" class="text-3xl hover:text-accent transition duration-300 social-icon" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
+                    <a href="mailto:your.email@example.com" class="text-3xl hover:text-accent transition duration-300 social-icon" aria-label="Send Email"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-white py-8 text-center">
+        <div class="container mx-auto px-4">
+            <p>&copy; <span id="current-year"></span> Omar Abdullah. All rights reserved.</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="https://linkedin.com/in/yourprofile" target="_blank" class="text-xl hover:text-accent transition duration-300 social-icon" aria-label="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/yourprofile" target="_blank" class="text-xl hover:text-accent transition duration-300 social-icon" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
+                <a href="mailto:your.email@example.com" class="text-xl hover:text-accent transition duration-300 social-icon" aria-label="Send Email"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for all internal navigation links
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevent default jump behavior
+
+                // Get the target element using the href attribute
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth' // Enable smooth scrolling
+                    });
+                }
+            });
+        });
+
+        // Update the current year in the footer dynamically
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Handle contact form submission (opens email client with pre-filled subject/body)
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the default form submission that reloads the page
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            // Construct the mailto link with encoded subject and body for proper formatting
+            const subject = encodeURIComponent(`Message from your Portfolio - ${name}`);
+            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+            const mailtoLink = `mailto:your.email@example.com?subject=${subject}&body=${body}`; // Replace with your actual email
+
+            // Open the user's default email client
+            window.location.href = mailtoLink;
+
+            // Optionally, clear the form fields after prompting to send the email
+            this.reset();
+
+            // Provide a custom message to the user, as 'alert()' is not allowed within Canvas.
+            // This message would typically be a custom modal or toast notification in a real app.
+            // For this single HTML file context, we'll imagine it's an internal UI message.
+            console.log("Please complete the email in your mail client. Your message has been prepared for sending.");
+            // If you were using a custom modal system, you'd show it here:
+            // showCustomMessage("Your message is ready in your email client. Please send it from there!", "info");
+        });
+
+
+        // --- Three.js Asteroids Background Animation ---
+        let scene, camera, renderer, asteroids;
+        const ASTEROID_COUNT = 100; // Number of asteroids for performance
+        const ASTEROID_SPEED = 0.05; // Base speed of falling asteroids
+
+        /**
+         * Initializes the Three.js scene for the falling asteroids background.
+         */
+        function initAsteroidsBackground() {
+            const canvas = document.getElementById('fallingAsteroidsCanvas');
+            const heroSection = document.getElementById('hero');
+
+            // Set up scene, camera, and renderer
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, heroSection.clientWidth / heroSection.clientHeight, 0.1, 1000);
+            // Alpha: true makes the background of the canvas transparent, so the hero section's bg-gradient is visible.
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(heroSection.clientWidth, heroSection.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio); // Improve rendering quality on high-DPI screens
+
+            // Position the camera to view the falling asteroids
+            camera.position.z = 50;
+            camera.position.y = 10; // Slightly lower camera to see more falling from top
+
+            asteroids = [];
+
+            // Add initial asteroids to populate the screen
+            for (let i = 0; i < ASTEROID_COUNT; i++) {
+                addAsteroid();
+            }
+
+            // Listen for window resize events to keep the canvas responsive
+            window.addEventListener('resize', onWindowResize, false);
+
+            // Start the animation loop
+            animateAsteroids();
+        }
+
+        /**
+         * Creates and adds a single asteroid (represented as an Icosahedron) to the scene.
+         */
+        function addAsteroid() {
+            // Randomize size for variety
+            const geometry = new THREE.IcosahedronGeometry(Math.random() * 0.8 + 0.2, 0); // Radius (0.2 to 1.0), detail (0 for low poly)
+            // Randomize color slightly (e.g., shades of gray/white) and opacity
+            const material = new THREE.MeshBasicMaterial({
+                color: new THREE.Color(0xdddddd + Math.random() * 0x111111), /* Lighter color for dark background */
+                transparent: true,
+                opacity: Math.random() * 0.4 + 0.2 // Opacity between 0.2 and 0.6
+            });
+            const asteroid = new THREE.Mesh(geometry, material);
+
+            // Position asteroid randomly at the top of the visible scene, with some horizontal and depth variation
+            asteroid.position.x = (Math.random() - 0.5) * 100; // -50 to 50
+            asteroid.position.y = (Math.random() * 50) + 30; // Start high above the viewport (30 to 80)
+            asteroid.position.z = (Math.random() - 0.5) * 50; // -25 to 25 depth for perspective
+
+            // Random initial rotation
+            asteroid.rotation.x = Math.random() * Math.PI;
+            asteroid.rotation.y = Math.random() * Math.PI;
+            asteroid.rotation.z = Math.random() * Math.PI;
+
+            // Store unique rotation and fall speeds for each asteroid
+            asteroid.userData = {
+                rotationSpeedX: (Math.random() - 0.5) * 0.01,
+                rotationSpeedY: (Math.random() - 0.5) * 0.01,
+                fallSpeed: ASTEROID_SPEED + (Math.random() * 0.03) // Base speed + small random variation
+            };
+
+            scene.add(asteroid);
+            asteroids.push(asteroid);
+        }
+
+        /**
+         * The main animation loop for the Three.js scene.
+         * Updates asteroid positions and rotations, and manages recycling.
+         */
+        function animateAsteroids() {
+            requestAnimationFrame(animateAsteroids);
+
+            asteroids.forEach((asteroid) => {
+                // Update position (falling downwards)
+                asteroid.position.y -= asteroid.userData.fallSpeed;
+
+                // Update rotation
+                asteroid.rotation.x += asteroid.userData.rotationSpeedX;
+                asteroid.rotation.y += asteroid.userData.rotationSpeedY;
+
+                // If asteroid falls off-screen, reset its position to the top to create a continuous loop
+                if (asteroid.position.y < -30) { // Check if it's far below the viewport
+                    asteroid.position.y = 30 + (Math.random() * 20); // Reset high above the viewport
+                    asteroid.position.x = (Math.random() - 0.5) * 100;
+                    asteroid.position.z = (Math.random() - 0.5) * 50;
+                    asteroid.material.opacity = Math.random() * 0.4 + 0.2; // Reset opacity
+                }
+            });
+
+            // Render the scene from the perspective of the camera
+            renderer.render(scene, camera);
+        }
+
+        /**
+         * Handles window resize events to ensure the Three.js canvas remains responsive.
+         */
+        function onWindowResize() {
+            const heroSection = document.getElementById('hero');
+            camera.aspect = heroSection.clientWidth / heroSection.clientHeight;
+            camera.updateProjectionMatrix(); // Update camera's projection matrix after aspect ratio change
+            renderer.setSize(heroSection.clientWidth, heroSection.clientHeight); // Resize renderer
+        }
+
+        // Initialize the Three.js background when the window has fully loaded
+        window.addEventListener('load', initAsteroidsBackground);
+    </script>
+</body>
+</html>
