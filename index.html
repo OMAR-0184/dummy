@@ -3,445 +3,465 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omar Abdullah - Portfolio</title>
+    <title>Omar Abdullah | Shinobi of the Code</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Playfair Display (serif for headings), Inter (sans-serif for body) -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Three.js CDN for 3D background animation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles and Animations -->
     <style>
-        /* Base styles with custom fonts and colors for dark theme */
+        /* Custom "brush" font */
+        .font-brush {
+            font-family: 'Zhi Mang Xing', cursive;
+        }
+
+        /* Custom "body" font */
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0f172a; /* Slate 900 for a deep dark background */
-            color: #e2e8f0; /* Slate 200 for primary text, light contrast */
+            background-color: #ffffff; /* bg-white */
         }
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Playfair Display', serif; /* Elegant serif for headings */
-            color: #f8fafc; /* Lighter color for headings */
+        
+        /* --- Sharingan Loader --- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
         }
-        /* Custom accent color for consistent branding */
-        .text-accent {
-            color: #60a5fa; /* Blue 400 for a vibrant accent on dark background */
+        .sharingan {
+            width: 150px;
+            height: 150px;
+            background: #c00;
+            border-radius: 50%;
+            border: 5px solid #222;
+            position: relative;
+            animation: sharingan-spin 3s linear infinite;
+            box-shadow: 0 0 35px #c00, 0 0 50px #c00 inset;
         }
-        /* Primary Button Styling */
-        .btn-primary {
-            @apply bg-blue-600 text-white px-8 py-3 rounded-lg shadow-md hover:bg-blue-500 transition duration-300 ease-in-out;
-            box-shadow: 0 4px 10px rgba(96, 165, 250, 0.4); /* Initial subtle glow */
+        .sharingan-inner {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #000;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 4px solid #111;
         }
-        .btn-primary:hover {
-            box-shadow: 0 6px 15px rgba(96, 165, 250, 0.6); /* More pronounced glow on hover */
+        .tomoe {
+            width: 30px;
+            height: 30px;
+            background: #000;
+            border-radius: 50% 0;
+            position: absolute;
+            transform-origin: center;
         }
-        /* Secondary Button Styling (e.g., for navigation or alternative actions) */
-        .btn-secondary {
-            @apply bg-transparent border border-blue-400 text-blue-400 px-6 py-3 rounded-lg hover:bg-blue-900 hover:text-white transition duration-300 ease-in-out;
+        .tomoe-1 { top: 20px; left: 60px; transform: rotate(45deg); }
+        .tomoe-2 { top: 60px; left: 20px; transform: rotate(165deg); }
+        .tomoe-3 { top: 60px; left: 100px; transform: rotate(-75deg); }
+        
+        @keyframes sharingan-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
-        /* Hero Text Glow Effect */
-        .hero-text-glow {
-            text-shadow: 0 0 8px rgba(96, 165, 250, 0.7); /* Subtle blue glow */
+        /* --- Chakra Glow Animation --- */
+        .chakra-glow {
+            animation: chakra-glow 2s linear infinite;
         }
-        .hero-sub-text-glow {
-            text-shadow: 0 0 5px rgba(226, 232, 240, 0.5); /* Subtle white glow for sub-text */
-        }
-
-        /* Skill Card Icon Hover Effect */
-        .skill-card:hover i {
-            transform: scale(1.1); /* Slightly enlarge icon */
-            color: #60a5fa; /* Change icon color to accent */
-            text-shadow: 0 0 10px rgba(96, 165, 250, 0.8); /* Add glow */
-            transition: all 0.3s ease-in-out;
-        }
-
-        /* Social Icon Hover Effect */
-        .social-icon:hover {
-            transform: scale(1.2); /* Enlarge icon */
-            color: #60a5fa; /* Change icon color to accent */
-            text-shadow: 0 0 12px rgba(96, 165, 250, 0.9); /* Add more prominent glow */
-            transition: all 0.3s ease-in-out;
-        }
-
-        /* Simple keyframe animation for elements appearing on load/scroll */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        @keyframes chakra-glow {
+            0%, 100% {
+                box-shadow: 0 0 8px #f97316, 0 0 12px #f97316;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            50% {
+                box-shadow: 0 0 16px #f97316, 0 0 24px #f97316;
             }
         }
-        /* Apply animation to elements with specific classes */
-        .animate-fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0; /* Start invisible */
+        
+        /* --- Scroll Reveal Animation --- */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-        .delay-400 { animation-delay: 0.4s; }
-        .delay-500 { animation-delay: 0.5s; }
-
-        /* Custom scrollbar for better aesthetics in dark mode */
+        .scroll-reveal.animate-fade-in-up {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* --- Custom Scrollbar --- */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #1a202c; /* Darker track */
-            border-radius: 10px;
+            background: #f3f4f6; /* bg-gray-100 */
         }
         ::-webkit-scrollbar-thumb {
-            background: #4a5568; /* Gray 600 for softer thumb color */
-            border-radius: 10px;
+            background: #f97316; /* bg-orange-500 */
+            border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #718096; /* Gray 500 on hover */
+            background: #ea580c; /* bg-orange-600 */
         }
     </style>
 </head>
-<body class="overflow-x-hidden">
-    <!-- Header Section -->
-    <header class="bg-gray-900 shadow-lg py-4 sticky top-0 z-50">
-        <nav class="container mx-auto flex justify-between items-center px-4">
-            <!-- Brand/Logo (Omar Abdullah) -->
-            <a href="#hero" class="text-3xl font-bold text-accent">Omar Abdullah</a>
-            <!-- Navigation Links -->
-            <ul class="flex space-x-6">
-                <li><a href="#about" class="text-slate-200 hover:text-accent transition duration-300 font-medium">About</a></li>
-                <li><a href="#skills" class="text-slate-200 hover:text-accent transition duration-300 font-medium">Skills</a></li>
-                <li><a href="#projects" class="text-slate-200 hover:text-accent transition duration-300 font-medium">Projects</a></li>
-                <li><a href="#contact" class="text-slate-200 hover:text-accent transition duration-300 font-medium">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="hero" class="relative h-screen flex items-center justify-center text-center bg-slate-900 overflow-hidden">
-            <!-- Asteroids Canvas will go here -->
-            <canvas id="fallingAsteroidsCanvas" class="absolute inset-0 z-0"></canvas>
-            <!-- Subtle background pattern or overlay for visual interest -->
-            <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800 opacity-50 z-10"></div> <!-- Reduced opacity for more asteroid visibility -->
-            <div class="relative z-20 p-6 max-w-3xl">
-                <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-4 text-white animate-fade-in-up">
-                    Hello, I'm <span class="text-accent hero-text-glow">Omar Abdullah</span>
-                </h1>
-                <p class="text-xl text-slate-200 mb-8 animate-fade-in-up delay-100 hero-sub-text-glow">
-                    A passionate <span class="font-semibold text-accent hero-text-glow">Android Developer</span> crafting intuitive and robust mobile experiences.
-                </p>
-                <a href="#projects" class="btn-primary animate-fade-in-up delay-200">View My Work</a>
-            </div>
-        </section>
+<body class="bg-white text-gray-900">
 
-        <!-- About Section -->
-        <section id="about" class="py-20 bg-slate-800">
-            <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-12">
-                <div class="md:w-1/2 animate-fade-in-up">
-                    <img src="https://placehold.co/400x400/334155/f8fafc?text=Omar+Abdullah" alt="Omar Abdullah's Photo" class="rounded-full shadow-lg mx-auto md:mx-0 w-64 h-64 object-cover border-4 border-accent">
-                </div>
-                <div class="md:w-1/2 text-center md:text-left animate-fade-in-up delay-100">
-                    <h2 class="text-4xl font-bold mb-6 text-white">About <span class="text-accent">Me</span></h2>
-                    <p class="text-lg text-slate-200 mb-4 leading-relaxed">
-                        Hi there! My name is Omar Abdullah. I'm currently pursuing a B.E. in Information Technology and am in my 2nd year. I am a passionate **Android Developer** with a knack for building intuitive and visually appealing mobile applications.
-                    </p>
-                    <p class="text-lg text-slate-200 leading-relaxed">
-                        My journey in development includes hands-on experience with Kotlin Jetpack Compose, through which I built a functional expense tracker. I've also delved into AI development, creating an AI chatbot utilizing the Tavily API, Groq, and Streamlit. I enjoy honing my problem-solving skills by regularly solving problems on LeetCode and am continuously expanding my expertise by learning Java.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="py-20 bg-slate-900">
-            <div class="container mx-auto px-4 text-center">
-                <h2 class="text-4xl font-bold mb-12 text-white animate-fade-in-up">My <span class="text-accent">Skills</span></h2>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                    <!-- Updated Skill Cards with .skill-card class -->
-                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-100 skill-card">
-                        <i class="fab fa-android text-6xl text-green-500 mb-4"></i>
-                        <h3 class="text-xl font-semibold text-slate-100">Android Development</h3>
-                    </div>
-                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-200 skill-card">
-                        <i class="fab fa-kotlin text-6xl text-purple-400 mb-4"></i>
-                        <h3 class="text-xl font-semibold text-slate-100">Kotlin & Jetpack Compose</h3>
-                    </div>
-                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-300 skill-card">
-                        <i class="fab fa-java text-6xl text-red-500 mb-4"></i>
-                        <h3 class="text-xl font-semibold text-slate-100">Java</h3>
-                    </div>
-                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-400 skill-card">
-                        <i class="fas fa-robot text-6xl text-purple-400 mb-4"></i>
-                        <h3 class="text-xl font-semibold text-slate-100">AI/ML (Streamlit, Groq)</h3>
-                    </div>
-                     <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-500 skill-card">
-                        <i class="fas fa-code text-6xl text-cyan-400 mb-4"></i>
-                        <h3 class="text-xl font-semibold text-slate-100">Problem Solving (LeetCode)</h3>
-                    </div>
-                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-400">
-                        <i class="fab fa-git-alt text-6xl text-red-600 mb-4"></i>
-                        <h3 class="text-xl font-semibold text-slate-100">Git & GitHub</h3>
-                    </div>
-                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-300">
-                        <i class="fab fa-html5 text-6xl text-orange-400 mb-4"></i>
-                        <h3 class="text-xl font-semibold text-slate-100">HTML5</h3>
-                    </div>
-                    <div class="bg-slate-700 p-6 rounded-lg shadow-md flex flex-col items-center hover:shadow-xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-200">
-                        <i class="fab fa-css3-alt text-6xl text-blue-400 mb-4"></i>
-                        <h3 class="text-xl font-semibold text-slate-100">CSS3 (Tailwind)</h3>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="py-20 bg-slate-800">
-            <div class="container mx-auto px-4 text-center">
-                <h2 class="text-4xl font-bold mb-12 text-white animate-fade-in-up">My <span class="text-accent">Projects</span></h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <!-- Project Card: Expense Tracker -->
-                    <div class="bg-slate-700 rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-100">
-                        <img src="https://placehold.co/600x400/253b53/f8fafc?text=Expense+Tracker" alt="Expense Tracker Project" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-2xl font-semibold text-slate-100 mb-3">Expense Tracker App</h3>
-                            <p class="text-slate-200 mb-4">Developed a mobile expense tracker application using Kotlin Jetpack Compose, focusing on intuitive UI/UX and efficient data management for personal finance.</p>
-                            <a href="#" target="_blank" class="text-accent hover:underline font-medium">View Project <i class="fas fa-arrow-right text-sm ml-1"></i></a>
-                        </div>
-                    </div>
-                    <!-- Project Card: AI Chatbot -->
-                    <div class="bg-slate-700 rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-200">
-                        <img src="https://placehold.co/600x400/253b53/f8fafc?text=AI+Chatbot" alt="AI Chatbot Project" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-2xl font-semibold text-slate-100 mb-3">AI Chatbot</h3>
-                            <p class="text-slate-200 mb-4">Engineered an AI chatbot leveraging the Tavily API for intelligent search capabilities, Groq for fast inference, and Streamlit for a user-friendly interactive interface.</p>
-                            <a href="#" target="_blank" class="text-accent hover:underline font-medium">View Project <i class="fas fa-arrow-right text-sm ml-1"></i></a>
-                        </div>
-                    </div>
-                    <!-- Project Card Example 3 - Retaining one for general web dev -->
-                    <div class="bg-slate-700 rounded-lg shadow-xl overflow-hidden hover:shadow-2xl transform hover:-translate-y-2 transition duration-300 animate-fade-in-up delay-300">
-                        <img src="https://placehold.co/600x400/253b53/f8fafc?text=Web+Project" alt="General Web Project" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-2xl font-semibold text-slate-100 mb-3">Responsive Web Application</h3>
-                            <p class="text-slate-200 mb-4">Designed and developed a fully responsive web application, ensuring optimal viewing and interaction across various devices and screen sizes.</p>
-                            <a href="#" target="_blank" class="text-accent hover:underline font-medium">View Project <i class="fas fa-arrow-right text-sm ml-1"></i></a>
-                        </div>
-                    </div>
-                    <!-- Add more project cards as needed -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="py-20 bg-slate-900">
-            <div class="container mx-auto px-4 text-center max-w-2xl">
-                <h2 class="text-4xl font-bold mb-12 text-white animate-fade-in-up">Get in <span class="text-accent">Touch</span></h2>
-                <p class="text-lg text-slate-200 mb-8 animate-fade-in-up delay-100">
-                    Have a question or interested in collaborating on a project? Feel free to reach out! I'm always open to new opportunities.
-                </p>
-                <form id="contact-form" class="bg-slate-700 p-8 rounded-lg shadow-xl space-y-6 animate-fade-in-up delay-200">
-                    <div>
-                        <label for="name" class="sr-only">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Your Name" required
-                               class="w-full p-4 border border-slate-600 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200 bg-slate-800 text-white placeholder-slate-400">
-                    </div>
-                    <div>
-                        <label for="email" class="sr-only">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Your Email" required
-                               class="w-full p-4 border border-slate-600 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200 bg-slate-800 text-white placeholder-slate-400">
-                    </div>
-                    <div>
-                        <label for="message" class="sr-only">Message</label>
-                        <textarea id="message" name="message" rows="6" placeholder="Your Message" required
-                                  class="w-full p-4 border border-slate-600 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-transparent transition duration-200 bg-slate-800 text-white placeholder-slate-400"></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary w-full">Send Message</button>
-                </form>
-                <div class="mt-10 flex justify-center space-x-6 text-slate-300 animate-fade-in-up delay-300">
-                    <a href="https://linkedin.com/in/yourprofile" target="_blank" class="text-3xl hover:text-accent transition duration-300 social-icon" aria-label="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://github.com/yourprofile" target="_blank" class="text-3xl hover:text-accent transition duration-300 social-icon" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
-                    <a href="mailto:your.email@example.com" class="text-3xl hover:text-accent transition duration-300 social-icon" aria-label="Send Email"><i class="fas fa-envelope"></i></a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer Section -->
-    <footer class="bg-gray-900 text-white py-8 text-center">
-        <div class="container mx-auto px-4">
-            <p>&copy; <span id="current-year"></span> Omar Abdullah. All rights reserved.</p>
-            <div class="flex justify-center space-x-6 mt-4">
-                <a href="https://linkedin.com/in/yourprofile" target="_blank" class="text-xl hover:text-accent transition duration-300 social-icon" aria-label="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
-                <a href="https://github.com/yourprofile" target="_blank" class="text-xl hover:text-accent transition duration-300 social-icon" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
-                <a href="mailto:your.email@example.com" class="text-xl hover:text-accent transition duration-300 social-icon" aria-label="Send Email"><i class="fas fa-envelope"></i></a>
-            </div>
+    <!-- ===== Loader ===== -->
+    <div id="loader">
+        <div class="sharingan">
+            <div class="sharingan-inner"></div>
+            <div class="tomoe tomoe-1"></div>
+            <div class="tomoe tomoe-2"></div>
+            <div class="tomoe tomoe-3"></div>
         </div>
-    </footer>
+    </div>
 
+    <!-- ===== Main Content (Initially Hidden) ===== -->
+    <div id="main-content" class="hidden">
+
+        <!-- ===== Header Navigation ===== -->
+        <header class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-lg">
+            <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Logo / Brand -->
+                    <a href="#home" class="flex items-center space-x-2 text-2xl font-bold text-gray-900">
+                        <!-- Konoha (Hidden Leaf) Symbol -->
+                        <svg class="h-8 w-8 text-orange-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 5a1 1 0 00-1 1v1a1 1 0 002 0V6a1 1 0 00-1-1zm4 10a1 1 0 001-1v-1a1 1 0 00-2 0v1a1 1 0 001 1zM5.05 8.05a1 1 0 000 1.414l1.414 1.414a1 1 0 001.414-1.414L6.464 8.05a1 1 0 00-1.414 0zM12.12 12.12a1 1 0 000 1.414l1.414 1.414a1 1 0 001.414-1.414l-1.414-1.414a1 1 0 00-1.414 0zM8.05 14.95a1 1 0 00-1.414 0l-1.414-1.414a1 1 0 00-1.414 1.414l1.414 1.414a1 1 0 001.414 0zM14.95 11.95a1 1 0 00-1.414 0l-1.414-1.414a1 1 0 00-1.414 1.414l1.414 1.414a1 1 0 001.414 0zM10 3a1 1 0 00-1 1v1a1 1 0 002 0V4a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                        <span class="font-brush text-3xl tracking-wide">Omar Abdullah</span>
+                    </a>
+                    
+                    <!-- Navigation Links -->
+                    <div class="hidden sm:flex sm:space-x-6">
+                        <a href="#home" class="text-gray-700 hover:text-orange-500 transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#projects" class="text-gray-700 hover:text-orange-500 transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium">Jutsu (Projects)</a>
+                        <a href="#skills" class="text-gray-700 hover:text-orange-500 transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium">Arsenal (Skills)</a>
+                        <a href="#achievements" class="text-gray-700 hover:text-orange-500 transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium">Feats</a>
+                        <a href="#contact" class="text-gray-700 hover:text-orange-500 transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+            </nav>
+            <!-- Mobile Nav (Simple wrap) -->
+            <div class="sm:hidden flex flex-wrap justify-center space-x-4 py-2 bg-white/50">
+                <a href="#home" class="text-gray-700 hover:text-orange-500 transition-colors duration-300 px-2 py-1 rounded-md text-xs font-medium">Home</a>
+                <a href="#projects" class="text-gray-700 hover:text-orange-500 transition-colors duration-300 px-2 py-1 rounded-md text-xs font-medium">Projects</a>
+                <a href="#skills" class="text-gray-700 hover:text-orange-500 transition-colors duration-300 px-2 py-1 rounded-md text-xs font-medium">Skills</a>
+                <a href="#achievements" class="text-gray-700 hover:text-orange-500 transition-colors duration-300 px-2 py-1 rounded-md text-xs font-medium">Feats</a>
+                <a href="#contact" class="text-gray-700 hover:text-orange-500 transition-colors duration-300 px-2 py-1 rounded-md text-xs font-medium">Contact</a>
+            </div>
+        </header>
+
+        <!-- ===== Main Content Area ===== -->
+        <main class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- ===== Hero Section ===== -->
+            <section id="home" class="min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center text-center py-20">
+                <div class="scroll-reveal">
+                    <h1 class="font-brush text-6xl sm:text-8xl md:text-9xl font-bold text-gray-900 drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]">
+                        Omar Abdullah
+                    </h1>
+                    <p class="mt-4 text-2xl sm:text-3xl md:text-4xl text-orange-500 font-semibold tracking-wider drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">
+                        Shinobi of the Code
+                    </p>
+                    <p class="mt-6 max-w-2xl text-lg text-gray-700">
+                        B.E. in Information Technology at Jadavpur University.
+                        Crafting robust and efficient applications, one line of code at a time.
+                    </p>
+                    
+                    <!-- Social Links -->
+                    <div class="mt-8 flex justify-center space-x-6">
+                        <a href="mailto:omarabdullah0184@gmail.com" target="_blank" class="text-gray-500 hover:text-orange-500 transition-transform duration-300 hover:scale-110">
+                            <span class="sr-only">Email</span>
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/omar-abdullah-ju/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-transform duration-300 hover:scale-110">
+                            <span class="sr-only">LinkedIn</span>
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        <a href="https://github.com/OMAR-0184" target="_blank" class="text-gray-500 hover:text-orange-500 transition-transform duration-300 hover:scale-110">
+                            <span class="sr-only">GitHub</span>
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.109-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                        <a href="https://leetcode.com/omarabdullah0184/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-transform duration-300 hover:scale-110">
+                            <span class="sr-only">LeetCode</span>
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 5.851 2.006 10.96a1.374 1.374 0 0 0 0 1.942l5.11 5.109 5.407 5.407c.266.266.614.438.961.438s.695-.172.961-.438l5.407-5.407 5.11-5.109a1.374 1.374 0 0 0 0-1.942L14.444 5.851 9.037.438A1.374 1.374 0 0 0 8.076 0H6.602c.468.457.88.944 1.237 1.374l5.407 5.407 5.11 5.11a.458.458 0 0 1 0 .647l-5.11 5.11-5.407 5.407a.458.458 0 0 1-.647 0L.438 12.562a.458.458 0 0 1 0-.647l5.11-5.11L10.955.438c.357-.43.77-.917 1.237-1.374h-1.47c-.347 0-.695.172-.961.438z"/></svg>
+                        </a>
+                        <a href="https://codeforces.com/profile/earendel0184" target="_blank" class="text-gray-500 hover:text-orange-500 transition-transform duration-300 hover:scale-110">
+                            <span class="sr-only">Codeforces</span>
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4.079 11.52v-2.112c0-1.04.848-1.888 1.888-1.888h2.112v-2.112c0-1.04.848-1.888 1.888-1.888h4.064c1.04 0 1.888.848 1.888 1.888v2.112h2.112c1.04 0 1.888.848 1.888 1.888v4.064c0 1.04-.848 1.888-1.888 1.888h-2.112v2.112c0 1.04-.848 1.888-1.888 1.888h-4.064c-1.04 0-1.888-.848-1.888-1.888v-2.112H5.967c-1.04 0-1.888-.848-1.888-1.888V11.52zm1.888 0v4.064h2.112v2.112h4.064v-2.112h2.112v-4.064h-2.112V9.408h-4.064v2.112H5.967zM0 11.52V5.967C0 2.672 2.672 0 5.967 0h12.066C21.328 0 24 2.672 24 5.967v12.066C24 21.328 21.328 24 18.033 24H5.967C2.672 24 0 21.328 0 18.033V11.52z"/></svg>
+                        </a>
+                    </div>
+                    
+                    <a href="#projects" class="mt-12 inline-block bg-orange-500 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg transition-all duration-300 hover:bg-orange-600 hover:scale-105 chakra-glow">
+                        View My Jutsu (Projects)
+                    </a>
+                </div>
+            </section>
+
+            <!-- ===== Projects Section ===== -->
+            <section id="projects" class="py-24">
+                <h2 class="scroll-reveal text-4xl sm:text-5xl font-bold text-center text-gray-900 mb-16">
+                    My Jutsu
+                    <span class="text-orange-500 font-brush text-5xl sm:text-6xl block">Project Scrolls</span>
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Project 1: MessBook -->
+                    <div class="scroll-reveal bg-gray-100 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 transition-all duration-300 hover:scale-[1.03] hover:shadow-orange-500/20">
+                        <div class="p-6">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <!-- Akatsuki Cloud Icon -->
+                                <svg class="w-10 h-10 text-red-600" fill="currentColor" viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><path d="M416.3 0C363.3 0 321.4 28.5 301.9 66.8c-12.8-5.7-27.1-8.8-41.9-8.8C193.3 58 136.5 106.3 136 172.8c-44.4-19.1-99.4-10.4-132 23.4C-34 234-2.1 316.5 73.1 352.2l2.6 1.3C94.5 379 123.6 398 156.4 405.8c-2.3 14.3-3.4 31.2-3.4 50.1C153 481.2 173.2 502 198.5 502c23.5 0 43.1-17.9 45.4-40.6 2.1 0 4.2-.1 6.3-.1 13.9 0 28.5-1.9 43.1-6.1C381.1 487.6 472.6 414.9 494.4 320.4c17-73.6 2.3-154.6-50.6-213.3C425.2 73.6 418.8 40.8 416.3 0zM224 288c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm144 64c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm80-128c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"/></svg>
+                                <h3 class="text-2xl font-bold text-gray-900">MessBook Hostel Mess App</h3>
+                            </div>
+                            <p class="text-gray-700 mb-4 text-sm">Built a cross-platform Flutter app to streamline hostel mess operations. Features a student dashboard, role-based admin panel, and real-time updates for meal bookings and notices. Deployed and used by 70+ students.</p>
+                            <div class="mb-4">
+                                <span class="text-orange-400 font-semibold">Tech Stack:</span>
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">Flutter</span>
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">FastAPI</span>
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">PostgreSQL</span>
+                                </div>
+                            </div>
+                            <a href="https://github.com/OMAR-0184/hostel-mess-frontend" target="_blank" class="inline-flex items-center font-medium text-orange-500 hover:text-orange-400 transition-colors duration-300">
+                                View Code
+                                <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: InsightEd -->
+                    <div class="scroll-reveal bg-gray-100 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 transition-all duration-300 hover:scale-[1.03] hover:shadow-orange-500/20">
+                        <div class="p-6">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <svg class="w-10 h-10 text-red-600" fill="currentColor" viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><path d="M416.3 0C363.3 0 321.4 28.5 301.9 66.8c-12.8-5.7-27.1-8.8-41.9-8.8C193.3 58 136.5 106.3 136 172.8c-44.4-19.1-99.4-10.4-132 23.4C-34 234-2.1 316.5 73.1 352.2l2.6 1.3C94.5 379 123.6 398 156.4 405.8c-2.3 14.3-3.4 31.2-3.4 50.1C153 481.2 173.2 502 198.5 502c23.5 0 43.1-17.9 45.4-40.6 2.1 0 4.2-.1 6.3-.1 13.9 0 28.5-1.9 43.1-6.1C381.1 487.6 472.6 414.9 494.4 320.4c17-73.6 2.3-154.6-50.6-213.3C425.2 73.6 418.8 40.8 416.3 0zM224 288c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm144 64c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm80-128c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"/></svg>
+                                <h3 class="text-2xl font-bold text-gray-900">InsightEd Learning App</h3>
+                            </div>
+                            <p class="text-gray-700 mb-4 text-sm">Developed a document-based learning app with a Dockerized FastAPI backend. Uses LangChain and Google Generative AI to create summaries and quizzes from user uploads, with FAISS for vector storage. Flutter UI includes dynamic quizzes and results analysis.</p>
+                            <div class="mb-4">
+                                <span class="text-orange-400 font-semibold">Tech Stack:</span>
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">Flutter</span>
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">FastAPI</span>
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">LangChain</span>
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">FAISS</span>
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">Docker</span>
+                                </div>
+                            </div>
+                            <a href="https://github.com/OMAR-0184/InsightEd" target="_blank" class="inline-flex items-center font-medium text-orange-500 hover:text-orange-400 transition-colors duration-300">
+                                View Code
+                                <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: Expense Tracker -->
+                    <div class="scroll-reveal bg-gray-100 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 transition-all duration-300 hover:scale-[1.03] hover:shadow-orange-500/20">
+                        <div class="p-6">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <svg class="w-10 h-10 text-red-600" fill="currentColor" viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg"><path d="M416.3 0C363.3 0 321.4 28.5 301.9 66.8c-12.8-5.7-27.1-8.8-41.9-8.8C193.3 58 136.5 106.3 136 172.8c-44.4-19.1-99.4-10.4-132 23.4C-34 234-2.1 316.5 73.1 352.2l2.6 1.3C94.5 379 123.6 398 156.4 405.8c-2.3 14.3-3.4 31.2-3.4 50.1C153 481.2 173.2 502 198.5 502c23.5 0 43.1-17.9 45.4-40.6 2.1 0 4.2-.1 6.3-.1 13.9 0 28.5-1.9 43.1-6.1C381.1 487.6 472.6 414.9 494.4 320.4c17-73.6 2.3-154.6-50.6-213.3C425.2 73.6 418.8 40.8 416.3 0zM224 288c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm144 64c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm80-128c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"/></svg>
+                                <h3 class="text-2xl font-bold text-gray-900">Expense Tracker Android App</h3>
+                            </div>
+                            <p class="text-gray-700 mb-4 text-sm">A modern, responsive expense tracking app using 100% Kotlin and Jetpack Compose. Implements a resilient offline-first database with RoomDB and utilizes Kotlin Flow for a reactive UI architecture that updates in real-time.</p>
+                            <div class="mb-4">
+                                <span class="text-orange-400 font-semibold">Tech Stack:</span>
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">Kotlin</span>
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">Jetpack Compose</span>
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">RoomDB</span>
+                                    <span class="bg-gray-300 text-gray-800 text-xs px-3 py-1 rounded-full">Kotlin Flow</span>
+                                </div>
+                            </div>
+                            <a href="https://github.com/OMAR-0184/ExpenseTrack" target="_blank" class="inline-flex items-center font-medium text-orange-500 hover:text-orange-400 transition-colors duration-300">
+                                View Code
+                                <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+            
+            <!-- ===== Skills Section ===== -->
+            <section id="skills" class="py-24 bg-gray-50 rounded-lg">
+                <h2 class="scroll-reveal text-4xl sm:text-5xl font-bold text-center text-gray-900 mb-16">
+                    My Ninja Arsenal
+                    <span class="text-orange-500 font-brush text-5xl sm:text-6xl block">Technical Skills</span>
+                </h2>
+                
+                <div class="max-w-4xl mx-auto space-y-12">
+                    <!-- Languages -->
+                    <div class="scroll-reveal">
+                        <h3 class="text-2xl font-semibold text-orange-400 mb-4">Languages (Chakra Natures)</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="bg-gray-200 text-gray-800 text-lg px-5 py-2 rounded-lg shadow-md">C</span>
+                            <span class="bg-gray-200 text-gray-800 text-lg px-5 py-2 rounded-lg shadow-md">Java</span>
+                            <span class="bg-gray-200 text-gray-800 text-lg px-5 py-2 rounded-lg shadow-md">Python</span>
+                            <span class="bg-gray-200 text-gray-800 text-lg px-5 py-2 rounded-lg shadow-md">Golang</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Frameworks & Libraries -->
+                    <div class="scroll-reveal">
+                        <h3 class="text-2xl font-semibold text-orange-400 mb-4">Frameworks & Libraries (Jutsu)</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="bg-gray-200 text-gray-800 text-lg px-5 py-2 rounded-lg shadow-md">FastAPI</span>
+                            <span class="bg-gray-200 text-gray-800 text-lg px-5 py-2 rounded-lg shadow-md">Flutter</span>
+                            <span class="bg-gray-200 text-gray-800 text-lg px-5 py-2 rounded-lg shadow-md">LangChain</span>
+                        </div>
+                    </div>
+
+                    <!-- Databases & Tools -->
+                    <div class="scroll-reveal">
+                        <h3 class="text-2xl font-semibold text-orange-400 mb-4">Databases & Tools (Ninja Gear)</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="bg-gray-200 text-gray-800 text-lg px-5 py-2 rounded-lg shadow-md">PostgreSQL</span>
+                            <span class="bg-gray-200 text-gray-800 text-lg px-5 py-2 rounded-lg shadow-md">Git</span>
+                            <span class="bg-gray-200 text-gray-800 text-lg px-5 py-2 rounded-lg shadow-md">GitHub</span>
+                            <span class="bg-gray-200 text-gray-800 text-lg px-5 py-2 rounded-lg shadow-md">Docker</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ===== Achievements Section ===== -->
+            <section id="achievements" class="py-24">
+                <h2 class="scroll-reveal text-4xl sm:text-5xl font-bold text-center text-gray-900 mb-16">
+                    Feats & Accomplishments
+                    <span class="text-orange-500 font-brush text-5xl sm:text-6xl block">Mission Log</span>
+                </h2>
+                
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <!-- Kunai SVG for list items -->
+                    <svg class="hidden">
+                        <symbol id="kunai" viewBox="0 0 20 20">
+                            <path fill="currentColor" d="M18.06 8.34l-5.34-5.34a1 1 0 00-1.42 0L9 5.3a5.08 5.08 0 00-4.4 2.14L1.7 10.36a1 1 0 000 1.41l2.84 2.84a1 1 0 001.41 0L8.88 11.7a5.08 5.08 0 002.14-4.4l2.3-2.3 1.41 1.41-2.3 2.3a3.07 3.07 0 01-1.28 2.6L7.07 13.5l-2.12-2.12 2.12-2.12a3.07 3.07 0 012.6-1.28l2.3-2.3 1.41 1.41-2.3 2.3A5.08 5.08 0 009 13.19l-2.3 2.3-1.41-1.41 2.3-2.3a3.07 3.07 0 011.28-2.6L12.93 7.1l2.12 2.12-2.12 2.12a3.07 3.07 0 01-2.6 1.28l-2.3 2.3 1.41 1.41 2.3-2.3a5.08 5.08 0 004.4-2.14l2.88-2.88a1 1 0 000-1.41z"/>
+                        </symbol>
+                    </svg>
+
+                    <ul class="space-y-4">
+                        <li class="scroll-reveal flex items-start">
+                            <svg class="w-6 h-6 text-orange-500 flex-shrink-0 mt-1 mr-3"><use xlink:href="#kunai"></use></svg>
+                            <span class="text-lg text-gray-700">Solved over <strong>600+ problems</strong> on Leetcode, strengthening core Data Structures and Algorithms.</span>
+                        </li>
+                        <li class="scroll-reveal flex items-start">
+                            <svg class="w-6 h-6 text-orange-500 flex-shrink-0 mt-1 mr-3"><use xlink:href="#kunai"></use></svg>
+                            <span class="text-lg text-gray-700">Reached a Codeforces rating of <strong>Specialist (1492)</strong> and a LeetCode contest rating of <strong>1793</strong>.</span>
+                        </li>
+                        <li class="scroll-reveal flex items-start">
+                            <svg class="w-6 h-6 text-orange-500 flex-shrink-0 mt-1 mr-3"><use xlink:href="#kunai"></use></svg>
+                            <span class="text-lg text-gray-700">Qualified in internal rounds of the <strong>Smart India Hackathon 2024</strong>.</span>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </section>
+        
+        </main>
+
+        <!-- ===== Footer / Contact ===== -->
+        <footer id="contact" class="bg-gray-50 border-t border-gray-200/50 mt-20 py-16">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="scroll-reveal text-4xl font-bold text-gray-900 mb-4">
+                    Send a Scroll
+                </h2>
+                <p class="scroll-reveal text-lg text-gray-700 mb-8 max-w-lg mx-auto">
+                    Interested in collaborating or have a mission for me? Let's connect.
+                </p>
+                
+                <div class="scroll-reveal flex flex-col sm:flex-row justify-center items-center gap-6 mb-10">
+                    <a href="mailto:omarabdullah0184@gmail.com" class="bg-white border border-gray-300 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-100 hover:text-orange-500 transition-all duration-300 shadow-lg text-lg">
+                        omarabdullah0184@gmail.com
+                    </a>
+                   
+                </div>
+
+                <!-- Social Links -->
+                <div class="scroll-reveal flex justify-center space-x-6 mb-8">
+                    <a href="mailto:omarabdullah0184@gmail.com" target="_blank" class="text-gray-500 hover:text-orange-500 transition-transform duration-300 hover:scale-110">
+                        <span class="sr-only">Email</span>
+                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/omar-abdullah-089aa4209/" target="_blank" class="text-gray-500 hover:text-orange-500 transition-transform duration-300 hover:scale-110">
+                        <span class="sr-only">LinkedIn</span>
+                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="https://github.com/OMAR-0184" target="_blank" class="text-gray-500 hover:text-orange-500 transition-transform duration-300 hover:scale-110">
+                        <span class="sr-only">GitHub</span>
+                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.109-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+                
+                <p class="text-gray-500 text-sm">
+                    Designed & Coded by Omar Abdullah. Believe it!
+                </p>
+            </div>
+        </footer>
+        
+    </div>
+
+    <!-- ===== JavaScript ===== -->
     <script>
-        // Smooth scrolling for all internal navigation links
-        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+        // --- Page Loader Logic ---
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            const mainContent = document.getElementById('main-content');
+            
+            // Fade out loader
+            loader.style.opacity = '0';
+            
+            // After fade out, hide it and show main content
+            setTimeout(() => {
+                loader.style.display = 'none';
+                mainContent.style.display = 'block';
+            }, 500); // Matches transition duration
+        });
+
+        // --- Smooth Scroll Logic ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault(); // Prevent default jump behavior
-
-                // Get the target element using the href attribute
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth' // Enable smooth scrolling
-                    });
-                }
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
         });
-
-        // Update the current year in the footer dynamically
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
-        // Handle contact form submission (opens email client with pre-filled subject/body)
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent the default form submission that reloads the page
-
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-
-            // Construct the mailto link with encoded subject and body for proper formatting
-            const subject = encodeURIComponent(`Message from your Portfolio - ${name}`);
-            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-            const mailtoLink = `mailto:your.email@example.com?subject=${subject}&body=${body}`; // Replace with your actual email
-
-            // Open the user's default email client
-            window.location.href = mailtoLink;
-
-            // Optionally, clear the form fields after prompting to send the email
-            this.reset();
-
-            // Provide a custom message to the user, as 'alert()' is not allowed within Canvas.
-            // This message would typically be a custom modal or toast notification in a real app.
-            // For this single HTML file context, we'll imagine it's an internal UI message.
-            console.log("Please complete the email in your mail client. Your message has been prepared for sending.");
-            // If you were using a custom modal system, you'd show it here:
-            // showCustomMessage("Your message is ready in your email client. Please send it from there!", "info");
-        });
-
-
-        // --- Three.js Asteroids Background Animation ---
-        let scene, camera, renderer, asteroids;
-        const ASTEROID_COUNT = 100; // Number of asteroids for performance
-        const ASTEROID_SPEED = 0.05; // Base speed of falling asteroids
-
-        /**
-         * Initializes the Three.js scene for the falling asteroids background.
-         */
-        function initAsteroidsBackground() {
-            const canvas = document.getElementById('fallingAsteroidsCanvas');
-            const heroSection = document.getElementById('hero');
-
-            // Set up scene, camera, and renderer
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, heroSection.clientWidth / heroSection.clientHeight, 0.1, 1000);
-            // Alpha: true makes the background of the canvas transparent, so the hero section's bg-gradient is visible.
-            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-            renderer.setSize(heroSection.clientWidth, heroSection.clientHeight);
-            renderer.setPixelRatio(window.devicePixelRatio); // Improve rendering quality on high-DPI screens
-
-            // Position the camera to view the falling asteroids
-            camera.position.z = 50;
-            camera.position.y = 10; // Slightly lower camera to see more falling from top
-
-            asteroids = [];
-
-            // Add initial asteroids to populate the screen
-            for (let i = 0; i < ASTEROID_COUNT; i++) {
-                addAsteroid();
-            }
-
-            // Listen for window resize events to keep the canvas responsive
-            window.addEventListener('resize', onWindowResize, false);
-
-            // Start the animation loop
-            animateAsteroids();
-        }
-
-        /**
-         * Creates and adds a single asteroid (represented as an Icosahedron) to the scene.
-         */
-        function addAsteroid() {
-            // Randomize size for variety
-            const geometry = new THREE.IcosahedronGeometry(Math.random() * 0.8 + 0.2, 0); // Radius (0.2 to 1.0), detail (0 for low poly)
-            // Randomize color slightly (e.g., shades of gray/white) and opacity
-            const material = new THREE.MeshBasicMaterial({
-                color: new THREE.Color(0xdddddd + Math.random() * 0x111111), /* Lighter color for dark background */
-                transparent: true,
-                opacity: Math.random() * 0.4 + 0.2 // Opacity between 0.2 and 0.6
-            });
-            const asteroid = new THREE.Mesh(geometry, material);
-
-            // Position asteroid randomly at the top of the visible scene, with some horizontal and depth variation
-            asteroid.position.x = (Math.random() - 0.5) * 100; // -50 to 50
-            asteroid.position.y = (Math.random() * 50) + 30; // Start high above the viewport (30 to 80)
-            asteroid.position.z = (Math.random() - 0.5) * 50; // -25 to 25 depth for perspective
-
-            // Random initial rotation
-            asteroid.rotation.x = Math.random() * Math.PI;
-            asteroid.rotation.y = Math.random() * Math.PI;
-            asteroid.rotation.z = Math.random() * Math.PI;
-
-            // Store unique rotation and fall speeds for each asteroid
-            asteroid.userData = {
-                rotationSpeedX: (Math.random() - 0.5) * 0.01,
-                rotationSpeedY: (Math.random() - 0.5) * 0.01,
-                fallSpeed: ASTEROID_SPEED + (Math.random() * 0.03) // Base speed + small random variation
-            };
-
-            scene.add(asteroid);
-            asteroids.push(asteroid);
-        }
-
-        /**
-         * The main animation loop for the Three.js scene.
-         * Updates asteroid positions and rotations, and manages recycling.
-         */
-        function animateAsteroids() {
-            requestAnimationFrame(animateAsteroids);
-
-            asteroids.forEach((asteroid) => {
-                // Update position (falling downwards)
-                asteroid.position.y -= asteroid.userData.fallSpeed;
-
-                // Update rotation
-                asteroid.rotation.x += asteroid.userData.rotationSpeedX;
-                asteroid.rotation.y += asteroid.userData.rotationSpeedY;
-
-                // If asteroid falls off-screen, reset its position to the top to create a continuous loop
-                if (asteroid.position.y < -30) { // Check if it's far below the viewport
-                    asteroid.position.y = 30 + (Math.random() * 20); // Reset high above the viewport
-                    asteroid.position.x = (Math.random() - 0.5) * 100;
-                    asteroid.position.z = (Math.random() - 0.5) * 50;
-                    asteroid.material.opacity = Math.random() * 0.4 + 0.2; // Reset opacity
+        
+        // --- Scroll Reveal Logic ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                    observer.unobserve(entry.target); // Optional: only animate once
                 }
             });
-
-            // Render the scene from the perspective of the camera
-            renderer.render(scene, camera);
-        }
-
-        /**
-         * Handles window resize events to ensure the Three.js canvas remains responsive.
-         */
-        function onWindowResize() {
-            const heroSection = document.getElementById('hero');
-            camera.aspect = heroSection.clientWidth / heroSection.clientHeight;
-            camera.updateProjectionMatrix(); // Update camera's projection matrix after aspect ratio change
-            renderer.setSize(heroSection.clientWidth, heroSection.clientHeight); // Resize renderer
-        }
-
-        // Initialize the Three.js background when the window has fully loaded
-        window.addEventListener('load', initAsteroidsBackground);
+        }, { 
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        });
+        
+        // Observe all elements with the .scroll-reveal class
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
     </script>
+
 </body>
 </html>
+
